@@ -1,0 +1,115 @@
+<head>
+  <title>goal-line</title>
+</head>
+
+<body>
+ 
+ <!--  {{> addGoalForm}}  -->
+  	<div id="mouseEvents">
+  		<div>minTotalDays: <span id="minTotalDays"></span></div> 
+  		<div>currentMousePosition: <span id="currentMousePosition"></span></div> 
+  		<div>placeHolderTotalDays: <span id="placeHolderTotalDays"></span></div> 
+  		<div>Year: <span id="year"></span></div> 
+  		<div>DaysLeft:  <span id="daysLeft"></span></div> 
+  		<div>Month:  <span id="month"></span></div> 
+  		<div>Day: <span id="day"></span></div>
+  		<div>object: <span id="object"></span></div>
+  	</div> 
+  <div class="showGoalLineWrapper"> 
+  	<div id="marker">
+  		<div class="markerInfoWrapper">
+  			<div id="markerInfo"> </div>
+  		</div> 
+  	</div> 
+  	{{> showGoalLine}}
+  </div> 
+</body>
+
+<template name="addGoalForm">
+	<form>
+		Name: <input type="text" id="goalName"> <br>
+		Description: <input type ="text" id="goalDescription">  <br>
+		Year: <input type ="text" id="goalYear">  <br>
+		Month: <input type ="text" id="goalMonth">  <br>
+		Day: <input type ="text" id="goalDay">  <br>
+		<input type="submit" id="submitButton" value="add"> 
+	</form> 
+</template> 
+
+<template name="showGoalLine"> 
+	<div class="endLineContainer"> 
+		<div class="topLineWrapper">
+			<div class="endLine">a</div> 
+			<div class="endLine"><div class="leftLine"></div></div> 
+		</div> 
+	</div> 
+	<div class="goalLineWrapper"> 
+		<div class="goalLine" id="goalLineLeft">
+			<div class="zoomControlsWrapper">
+				<div id="zoomControls">
+					<div class="zoomButton" id="zoomOut"> - </div> 
+					<div class="zoomButton" id="zoomIn"> + </div> 
+				</div>  
+			</div> 
+		</div> 
+		<div class="goalLine" id="goalLineRight">
+			<div id="line"></div> 
+			{{#each showGoal.getGoals}}
+				<div class="goal {{ _id }}" style="top:{{relativePosition}}px;">
+					<form class="flyForm"> 
+						<div class="goalDate">
+							<span class="flyGoalDate"> {{goalDay}}/{{goalMonth}}/{{goalYear}} </span>
+							
+							 <div>
+								<span class="flyGoalDaysLeft"> {{goalDaysLeft}} days till </span> 
+							</div>
+							<!-- <div>
+								<span class="flyGoalDateObject"> {{goalTotalDay}} </span> 
+							</div> -->
+						</div> 
+						<div class="goalName">
+
+							<span class="flyGoalName"> {{ goalName }} </span>  
+							<input type="text" class="flyFormInput flyFormGoalName {{ _id }}" value="{{ goalName }}"> 
+						</div> 
+						<div class="goalDescription"> 
+							<span class="flyGoalDescription">{{ goalDescription }} </span>
+							<input type="text" class="flyFormInput flyFormGoalDescription {{ _id }}" value="{{goalDescription}}">
+						</div> 
+						<div>
+							<input type="text" class="flyFormInput flyFormGoalDay {{ _id }}" value="{{goalDay}}"><input type="text" class="flyFormInput flyFormGoalMonth {{ _id }}" value="{{goalMonth}}"><input type="text" class="flyFormInput flyFormGoalYear {{ _id }}" value="{{goalYear}}">
+						</div> 
+						<!-- <div class="goalRelativePosition"> 
+							<span class="flyGoalPosition">Position: {{ relativePosition }} </span>
+						</div>  -->
+						<div class="buttons {{ _id }}"> 
+							<input type="button" class="button" id="removeButton" value="-">
+							<input type="submit" class="button" id="updateButton" value="+"> 
+						</div> 
+					</form> 
+				</div> 
+			{{/each}}
+			<div class="currentDayWrapper" style="top:{{showGoal.getCurrentDay.currentRelativePosition}}px">
+				<div class="currentDayInner"> 
+					<span id="currentDay"></span> 
+					<div id="currentDayPulseWrapper"> 
+						<div class="currentDayPulseOuter">
+							<div class="currentDayPulseMiddle">
+								<div class="currentDayPulseInner">
+									<span id="currentDayPulse"></span>  
+								</div>
+							</div>
+						</div>
+						
+					</div> 
+				</div> 
+			</div> 
+		</div>
+	</div> 
+	<div class="endLineContainer"> 
+		<div class="topLineWrapper">
+			<div class="endLine">a</div> 
+			<div class="endLine"><div class="leftLine"></div></div> 
+		</div> 
+	</div> 
+</template> 

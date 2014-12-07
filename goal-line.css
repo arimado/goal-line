@@ -1,0 +1,417 @@
+/* 
+**************************************
+CSS RESET 
+**************************************
+*/
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* CSS declarations go here */
+
+body {
+	font-family: arial;
+}
+
+#mouseEvents {
+	padding: 20px;
+	position: fixed;
+	z-index: 100;
+	display: none;
+}
+
+.showGoalLineWrapper {
+
+}
+
+	#marker {
+		border-top: 1px solid #ccc;
+		position: absolute;
+		width: 100%;
+		font-size: 1em;
+		font-weight: bold;
+		color: #ccc;
+
+	}
+
+	.markerInfoWrapper {
+		width: 50%;
+	}
+
+	#markerInfo {
+		padding: 20px 30% 0 0;
+		text-align: right;
+	}
+
+	.endLineContainer {
+		overflow: auto;
+	}
+
+		.endLineWrapper {
+			overflow: auto;
+			
+		}
+
+			.endLine {
+				width: 50%;
+				float: left;
+			}
+
+				.leftLine {
+					border-left: 5px solid #ccc;
+					height: 200px;
+				}
+
+	.goalLineWrapper {
+		overflow: auto;
+	}
+
+	.goalLine {
+		position: relative;
+		width: 50%;
+		float: left; 
+	}
+
+		#goalLineLeft {
+			
+		}
+
+			.month {
+				position: absolute;
+				right: 10px;
+			}
+
+			.zoomControlsWrapper {
+				position: fixed;
+				top: 40%;
+				
+			}
+
+				#zoomControls {
+					padding: 0 0 0 10px;
+				}
+
+					.zoomButton {
+						margin: 0 0 10px 0;
+						border: 4px solid #ccc;
+						border-radius: 50px;
+
+					}
+
+					#zoomOut {
+						padding: 10px 14px 10px 14px;
+					}
+
+						#zoomOut:hover {
+							border: 4px solid black;
+							cursor: pointer;
+						}
+
+
+					#zoomIn {
+						padding: 10px 14px 10px 14px;
+					}
+
+						#zoomIn:hover {
+							border: 4px solid black;
+							cursor: pointer;
+
+						}
+
+
+
+
+		#goalLineRight {
+			/*background: grey;*/
+		}
+
+			#line {
+				border-left: 5px solid #ddd;
+				
+			}
+
+		.goal {
+			left: 10px;
+			position: absolute;
+			/*border: 1px solid red;*/
+			z-index: 200;
+			font-family: arial;
+		}
+			.goal:hover {
+				
+			}
+
+			.flyForm {
+				position: relative;
+			}
+
+				.flyGoalDate {
+					color: grey;
+					position: absolute;
+					margin-left: -120px;
+					text-align: right;
+					width: 100px;
+					color: #ccc;
+					font-weight: bold;
+					font-size: 12px;
+				}
+
+					.flyGoalDaysLeft {
+						margin: 0 0 0 2px;
+						color: #ccc;
+						font-weight: bold;
+						font-size: 12px;
+					}
+
+				.goalName {
+					
+					font-weight: bold;
+					margin: 5px 0 5px 0;
+				}
+					.flyGoalName {
+						border: 1px solid white;
+						font-size: 1em;
+						padding: 2px 0px 3px 1px;
+					}
+
+					.goalName .flyFormInput {
+						font-size: 1em;
+						font-weight: bold;
+						font-family: arial;
+					}
+
+				.goalDescription {
+					font-size: 12px;
+				}
+
+					.flyGoalDescription {
+						border: 1px solid white;
+						padding: 1px 0px 1px 1px;
+					}
+
+					.goalDescription .flyFormInput {
+						font-family: helvetica;
+						font-size: 12px;
+					}
+
+				.flyFormInput {
+					direction: inline-block;
+					display: none;
+					border-color: transparent;
+					background-color: transparent;
+				}
+
+					.flyFormInput::-webkit-input-placeholder {
+					   color: black;
+					}
+
+					.flyFormInput:-moz-placeholder { /* Firefox 18- */
+					   color: black;  
+					}
+
+					.flyFormInput::-moz-placeholder {  /* Firefox 19+ */
+					   color: black;  
+					}
+
+					.flyFormInput:-ms-input-placeholder {  
+					   color: black;  
+					} 
+
+				.buttons {
+					margin: 10px 0 0 0;
+					display: none;
+				}
+
+					.button {
+						margin: 0 3px 0 0;
+					    display: inline-block;
+					    border: 0;
+					    text-decoration: none;
+					    cursor: pointer;
+					    color: black;
+					    border: 3px solid #ddd;
+					    font: 12px Verdana;
+					    text-align: center;
+					    -webkit-border-radius: 50px;
+						-moz-border-radius: 50px;
+						border-radius: 50px;
+						height: 30px;
+						width: 30px;
+						background: none;
+						font-weight: bold;
+						color: #ccc;
+
+					}
+
+						.button:hover {
+							border: 3px solid black;
+							color: black;
+						}
+
+						#removeButton {
+							line-height: 20px;
+						}
+
+						#updateButton {
+
+						}
+
+				.buttons input {
+				   
+				}
+
+
+
+					.button {
+						display: inline-block;
+						/*padding: 20px;*/
+					}
+
+
+		.currentDayWrapper {
+			position: absolute;
+		}
+			.currentDayInner {
+				position: relative;
+			}
+				#currentDay {
+					padding: 0 0 0 10px;
+					color: #ddd;
+				}	
+
+				#currentDay:before {
+					position: absolute;
+					width: 10px;
+					height: 10px;
+					border-radius: 20px;
+					background: blue;
+					display: block;
+					content: " ";
+					top: -3px;
+					left: -2px;
+				}
+
+					#currentDayPulseWrapper {
+						position: absolute;
+						left: 0;
+						top: 0;
+						margin: -48px 0 0 -47px;
+						height: 100px;
+						width: 100px;
+					}
+
+						.currentDayPulseOuter {
+						    display: table;
+						    position: absolute;
+						    height: 100%;
+						    width: 100%;
+						}
+
+						.currentDayPulseMiddle {
+						    display: table-cell;
+						    vertical-align: middle;
+						}
+
+						.currentDayPulseInner {
+						    margin-left: auto;
+						    margin-right: auto; 
+						    width: 50px;
+						}
+
+					#currentDayPulse {
+						width: 4px;
+						height: 4px;
+						border-radius: 20px;
+						border: 3px solid blue;
+						background: none;
+						display: block;
+						content: " ";
+						margin: auto;
+						opacity: .5;
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
