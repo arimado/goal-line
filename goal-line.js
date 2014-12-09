@@ -329,13 +329,12 @@ if(Meteor.isClient) {
             e.preventDefault();
 
             //parsing user input data 
-
             var goalName = template.find('.flyFormGoalName.' + this._id).value; 
             var goalDescription = template.find('.flyFormGoalDescription.' + this._id).value; 
             var goalYear = parseInt(template.find('.flyFormGoalYear.' + this._id).value); 
             var goalMonth = parseInt(template.find('.flyFormGoalMonth.' + this._id).value) - 1; 
             var goalDay = parseInt(template.find('.flyFormGoalDay.' + this._id).value); 
-            var goalDate = new Date(goalYear, goalMonth, goalDay); 
+            var goalDate = new Date(goalYear, goalMonth, goalDay);
 
             //getTotalDay function 
             var goalTotalDay = getTotalDay(goalDate); 
@@ -392,17 +391,6 @@ if(Meteor.isServer) {
                 goalDaysLeft: parseInt(goalTotalDay - currentTotalDay)
             });
         }, 
-        addPlaceholder:function() {
-            goals.insert({
-                goalName: 'name here', 
-                goalDescription: 'description',
-                goalDate: goalDate,
-                goalYear: goalDate.getFullYear(),
-                goalMonth: goalDate.getMonth() + 1,
-                goalDay: goalDate.getDate(),
-                goalTotalDay: goalTotalDay
-            }); 
-        },
         addRelativePosition:function(currentID, relativePosition) {
             goals.update({_id: currentID}, {$set: {relativePosition: relativePosition}})
         },
