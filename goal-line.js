@@ -7,6 +7,7 @@
 // 
 
 goals = new Mongo.Collection('goals'); 
+settings = new Mongo.Collection('settings'); 
 
 if(Meteor.isClient) {
 
@@ -14,15 +15,19 @@ if(Meteor.isClient) {
     // ------ FRONT END JS ------------
     // **********************************
 
-    Meteor.call('removeInitGoal', "initialDate");
+    Meteor.call('removeInitGoal', "initialDate"); 
 
+    
     var currentMousePosition = 0
     var globalZoom = 1; 
+
+    var pastYears = 5;
+    var futureYears = 15;
 
     var minTotalDays = 0; 
     var maxTotalDays = 0; 
     var lineHeight = 0; 
-    var showGoalFired = 0
+    var showGoalFired = 0;
                                                         //   
     var calendar =      [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
     var leapCalendar =  [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
@@ -109,17 +114,34 @@ if(Meteor.isClient) {
        }  
     } 
 
+    function initLine() {
+        $('.goalLine').css({height: lineHeight}, 3000);
+        $('#line').css({height: lineHeight}, 3000); 
+    }
+
+    function initSettings() {
+
+        settingLength = settings.find().fetch().length; 
+        console.log('settingLength - ' + settingLength); 
+        if(settings.find().fetch().length < 1) {
+            console.log('settings initiated'); 
+            settings.insert({pastYearsAdd: 5, futureYearsAdd: 15}); 
+        } else {
+            console.log('settings allready intiated');
+        }
+
+    }
+
     var initialDate = new Date(); 
     var intialTotalDay = getTotalDay(initialDate); 
     console.log(initialDate);
     Meteor.call('addGoal', 'test', 'test', initialDate, intialTotalDay, 'initialDate');
 
-    
 
     $(document).ready(function(){
-        $('.showGoalLineWrapper').on('mousemove', function(e) {
-            $('#marker').css({top:e.pageY}); 
-        });
+        // $('.showGoalLineWrapper').on('mousemove', function(e) {
+        //     $('#marker').css({top:e.pageY}); 
+        // });
 
         $('#goalLineLeft').on('mousemove', function(e) {
 
@@ -127,7 +149,7 @@ if(Meteor.isClient) {
 
             currentMousePosition = parseInt((e.pageY - offset.top));
 
-            var placeholderTotalDay = currentMousePosition + minTotalDays;
+            var placeholderTotalDay = (currentMousePosition / globalZoom) + minTotalDays;
 
             var date = getDate(placeholderTotalDay); 
            
@@ -139,7 +161,6 @@ if(Meteor.isClient) {
             // $("#month").text(date.month); 
             // $("#day").text(date.day); 
             // $("#object").text(date.object);
-
             $("#markerInfo").text(date.day + ' / ' + date.month + ' / ' + date.year); 
 
         });
@@ -147,6 +168,27 @@ if(Meteor.isClient) {
         $('#goalLineRight').click(function(){
             console.log('goaline clicked');
         })
+
+        $('#zoomIn').click(function(){
+            if(globalZoom < 6) {
+                globalZoom++; 
+            }  
+        })
+        $('#zoomOut').click(function(){
+            if(globalZoom > 0) {
+                globalZoom--; 
+            }
+        })
+
+        $('#addFutureYears').click(function(){
+            console.log('future');
+            pastYears += 10; 
+        }); 
+        $('#addPastYears').click(function(){
+            console.log('past');
+            futureYears += 10; 
+        }); 
+
     }); 
 
     setInterval(function(){
@@ -159,7 +201,6 @@ if(Meteor.isClient) {
     // ------ Meteor functions ------------
     // **********************************
 
-    
     // Add Goal Form 
     Template.addGoalForm.events({
         'submit form': function(e, template) {
@@ -199,34 +240,23 @@ if(Meteor.isClient) {
 
             //get current day
             currentDay = new Date(); 
-
             currentTotalDay = getTotalDay(currentDay); 
 
             minTotalDays = parseInt(currentDay.getFullYear() - 5) * 365.26;
             maxTotalDays = parseInt(currentDay.getFullYear() + 15) * 365.26;
 
-            currentRelativePosition = currentTotalDay - minTotalDays; 
+            currentRelativePosition = (currentTotalDay - minTotalDays) * globalZoom; 
 
             //set relativePosition 
             for(var i = 0; i < goals.find().fetch().length; i++) {
                 var currentTotalDays = goals.find().fetch()[i].goalTotalDay; 
                 var currentID = goals.find().fetch()[i]._id; 
                 var relativePosition = currentTotalDays - minTotalDays;
-                Meteor.call('addRelativePosition', currentID, relativePosition); 
+                Meteor.call('addRelativePosition', currentID, (relativePosition * globalZoom)); 
             }
 
             //set height 
-            lineHeight = maxTotalDays - minTotalDays + 500;
-
-            function initLine() {
-                 $('.goalLine').css({height: lineHeight}, 3000, function(){
-                    console.log('fired 1');
-                 });
-                 $('#line').css({height: lineHeight}, 3000, function(){
-                    console.log('fired 2');
-                 }); 
-                 console.log('initLine fired');
-            }
+            lineHeight = globalZoom * (maxTotalDays - minTotalDays + 500);
 
             initLine(); 
 
@@ -240,12 +270,6 @@ if(Meteor.isClient) {
 
             }
 
-            //this is where we fight 
-
-
-            
-
-
           showGoalFired++; 
 
             //checks if the showGoal function is finished firing 
@@ -253,49 +277,6 @@ if(Meteor.isClient) {
             checkShowGoalFinish(); 
             
             function checkShowGoalFinish() {  
-
-                
-
-                // var goalsArray = goals.find().fetch(); 
-
-                // if(goalsArray.length > 0) {
-
-                //     if(showGoalFired == goals.find().fetch().length) {
-
-                //         var sortedGoals = goals.find({}, {sort: {relativePosition: 1}}).fetch();
-                        
-                //         var day = 1;
-                //         var month = 30; 
-                //         var year = 365; 
-                //         var b = 0;
-
-                //         var currentDate = sortedGoals[0].goalMonth;
-                //         var monthIndex = 0; 
-
-                //         function appendDate() {
-                //             if (currentDate == 0) {
-                //                 monthsArray[0] = {currentDate: sortedGoals[0].goalMonth}; 
-                //                 currentDate++
-                //             } else if(currentDate < 13 && currentDate != 0) {
-                //                 monthsArray[monthIndex++] = {currentDate: currentDate}; 
-                //                 currentDate++;
-                //             } else {
-                //                 currentDate = 1; 
-                //             }
-                //         } 
-
-                //         for(var i = 0; i < lineHeight; i = i+month) {
-                //             appendDate();
-                //         }
-
-                //         var monthHeight = 30;  
-
-                //         for(var i = 1; i < monthsArray.length; i++) {
-                //             monthsArray[i].dateHeight = monthHeight;
-                //             monthHeight+=30;
-                //         }
-                //     }
-                // }
 
                 $('.goal').hover(
 
@@ -318,7 +299,7 @@ if(Meteor.isClient) {
             var intialPostElement = goals.findOne({initialName: 'initialDate'});
 
             if(intialPostElement === undefined) {
-                console.log('nothing');
+                
             } else {
                  $('.' + intialPostElement._id).css({display: "none"});
             } 
@@ -360,7 +341,6 @@ if(Meteor.isClient) {
             var goalTotalDay = getTotalDay(goalDate); 
                 
             //get relative position; 
-
             var relativePosition; 
 
             if(goalTotalDay >= minTotalDays) {
@@ -376,13 +356,7 @@ if(Meteor.isClient) {
         'click #goalLineLeft':function(){
             
             //reverse parse 
-            var placeholderTotalDay = currentMousePosition + minTotalDays; 
-
-            // var goalYear = parseInt(placeholderTotalDay / 365.26);
-            // var goalMonth = parseInt((placeholderTotalDay - ((goalYear - 1) * 365)) / 30) + 1;
-            // var goalDay = parseInt((((placeholderTotalDay - ((goalYear - 1) * 365)) / 30) - (goalMonth - 1)) * 30); 
-            // var goalDate = new Date(goalYear, goalMonth, goalDay); 
-
+            var placeholderTotalDay = (currentMousePosition / globalZoom) + minTotalDays;
             var date = getDate(placeholderTotalDay); 
             
             var currentDay = new Date(); 
@@ -399,14 +373,11 @@ if(Meteor.isClient) {
         }, 
         'click #goalLineRight':function() {
             console.log('goalineright clicked');
-            Meteor.call('removeInitGoal', "initialDate");
         }
-
     });
 }
 
 if(Meteor.isServer) {
-
     Meteor.methods({
         addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay){
             goals.insert({
@@ -452,6 +423,15 @@ if(Meteor.isServer) {
                 goalTotalDay: goalTotalDay,
                 relativePosition: relativePosition
             }})
+        },
+        updateSettings: function() {
+            settings.update({}); 
+        },
+        initSettings: function(){
+            settings.insert({
+                pastYears: pastYears,
+                futureYears: futureYears
+            });
         }
     });
 }

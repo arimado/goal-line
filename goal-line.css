@@ -94,6 +94,11 @@ body {
 		overflow: auto;
 	}
 
+	.endLineContainer:hover {
+		background: #ddd;
+		cursor: pointer;
+	}
+
 		.endLineWrapper {
 			overflow: auto;
 			
@@ -110,7 +115,7 @@ body {
 				}
 
 	.goalLineWrapper {
-		overflow: auto;
+		overflow: hidden;
 	}
 
 	.goalLine {
