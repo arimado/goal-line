@@ -83,13 +83,13 @@
 							<span class="flyGoalPosition">Position: {{ relativePosition }} </span>
 						</div>  -->
 						<div class="priority">
-							<input type="radio" id="radio1_{{_id}}" name="radios" value="default" >
+							<input type="radio" id="radio1_{{_id}}" name="radios" value="1" {{check1}}>
 							<label class="radio1" for="radio1_{{_id}}"><div class="radioInner radioInner1"></div></label>
 
-							<input type="radio" id="radio2_{{_id}}" name="radios" value="important" >
+							<input type="radio" id="radio2_{{_id}}" name="radios" value="2" {{check2}}>
 							<label class="radio2" for="radio2_{{_id}}"><div class="radioInner radioInner2"></div></label>
 
-							<input type="radio"  id="radio3_{{_id}}" name="radios" value="veryImportant" >
+							<input type="radio"  id="radio3_{{_id}}" name="radios" value="3" {{check3}}>
 							<label class="radio3" for="radio3_{{_id}}"><div class="radioInner radioInner3"></div></label>
 						</div>
 						<div class="buttons {{ _id }}"> 

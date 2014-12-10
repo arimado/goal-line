@@ -165,11 +165,6 @@ if(Meteor.isClient) {
 
         });
 
-        $('#goalLineRight').click(function(){
-             
-            return false; 
-        })
-
         $('#zoomIn').click(function(){
             if(globalZoom < 6) {
                 globalZoom++; 
@@ -279,12 +274,8 @@ if(Meteor.isClient) {
 
 
             checkShowGoalFinish(); 
-
-
             
             function checkShowGoalFinish() {  
-
-
                 $('.goal').hover(
 
                     function(){
@@ -311,7 +302,6 @@ if(Meteor.isClient) {
                  $('.' + intialPostElement._id).css({display: "none"});
             }
 
-
             return { 
                 getGoals:goals.find(),  
                 getCurrentDay: {
@@ -337,7 +327,29 @@ if(Meteor.isClient) {
             e.preventDefault();
 
             //parsing user date data 
-            var goalPriority = e.target.radios.value;
+            var goalPriority = e.target.radios.value; 
+            var check1, check2, check3;
+
+            console.log(goalPriority); 
+
+            switch(goalPriority){
+                case "1":
+                    check1 = 'checked';
+                    check2 = null; 
+                    check3 = null;
+                    break; 
+                case "2":
+                    check1 = null;
+                    check2 = 'checked'; 
+                    check3 = null;
+                    break;  
+                case "3":
+                    check1 = null;
+                    check2 = null; 
+                    check3 = 'checked';
+                    break;  
+            }
+
             var goalName = template.find('.flyFormGoalName.' + this._id).value; 
             var goalDescription = template.find('.flyFormGoalDescription.' + this._id).value; 
             var goalYear = parseInt(template.find('.flyFormGoalYear.' + this._id).value); 
@@ -357,7 +369,7 @@ if(Meteor.isClient) {
                 relativePosition = goalTotalDay; 
             }
 
-            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority); 
+            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3); 
             
         },
         //get f
@@ -371,7 +383,7 @@ if(Meteor.isClient) {
             var currentTotalDay = getTotalDay(currentDay); 
           
             //add to database with parsed date 
-            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay, 'default', null, null, null); 
+            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay, 'default', 'checked', null, null); 
         },
         // 'click .goal':function() {
         //    $('.flyFormInput.' + this._id).css({display: 'inline-block'});
@@ -413,7 +425,7 @@ if(Meteor.isServer) {
         removeInitGoal:function(intialName){
             goals.remove({initialName: intialName});
         },
-        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority) {
+        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3) {
             goals.update({_id: currentID}, {$set: {
                 goalName: goalName,
                 goalDescription: goalDescription,
@@ -423,7 +435,10 @@ if(Meteor.isServer) {
                 goalDay: goalDate.getDate(), 
                 goalTotalDay: goalTotalDay,
                 relativePosition: relativePosition,
-                goalPriority: goalPriority
+                goalPriority: goalPriority,
+                check1: check1,
+                check2: check2,
+                check3: check3
             }})
         },
         updateSettings: function() {
