@@ -187,12 +187,29 @@ if(Meteor.isClient) {
 
         $('#menuBarButton').click(function(){
             $('.settingsWrapper').slideToggle("slow");
-        })
+        });
 
-        
 
         function checkSettings() {
 
+            
+
+        }
+
+    }); 
+
+    setInterval(function(){
+        $('#currentDayPulseWrapper').find('#currentDayPulse').animate({height: '20px', width: '20px', opacity: 0}, 400, function(){
+               $('#currentDayPulseWrapper').find('#currentDayPulse').css({height: '4px', width: '4px', opacity: 1});
+        }); 
+    }, 1000); 
+
+    // **********************************
+    // ------ Meteor functions ------------
+    // **********************************
+
+    Template.menu.events({
+        'click li':function(e, template) {
 
             var dayRadio = e.target.day.value; 
             var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3; 
@@ -215,7 +232,7 @@ if(Meteor.isClient) {
                     break;  
             }
 
-            var fontRadio = e.target.dont.value; 
+            var fontRadio = e.target.font.value; 
             var fontRadioCheck1, fontRadioCheck2, fontRadioCheck3; 
 
             switch(fontRadio) {
@@ -302,20 +319,8 @@ if(Meteor.isClient) {
             console.log(dateRadioCheck2);
             console.log(dateRadioCheck3);
             console.log(dateRadioCheck1);
-
         }
-
-    }); 
-
-    setInterval(function(){
-        $('#currentDayPulseWrapper').find('#currentDayPulse').animate({height: '20px', width: '20px', opacity: 0}, 400, function(){
-               $('#currentDayPulseWrapper').find('#currentDayPulse').css({height: '4px', width: '4px', opacity: 1});
-        }); 
-    }, 1000); 
-
-    // **********************************
-    // ------ Meteor functions ------------
-    // **********************************
+    })
 
     // Add Goal Form 
     Template.addGoalForm.events({
