@@ -5,24 +5,95 @@
 <body>
  
  <!--  {{> addGoalForm}}  -->
-  	<div id="mouseEvents">
-  		<div>minTotalDays: <span id="minTotalDays"></span></div> 
-  		<div>currentMousePosition: <span id="currentMousePosition"></span></div> 
-  		<div>placeHolderTotalDays: <span id="placeHolderTotalDays"></span></div> 
-  		<div>Year: <span id="year"></span></div> 
-  		<div>DaysLeft:  <span id="daysLeft"></span></div> 
-  		<div>Month:  <span id="month"></span></div> 
-  		<div>Day: <span id="day"></span></div>
-  		<div>object: <span id="object"></span></div>
-  	</div> 
-  <div class="showGoalLineWrapper"> 
-  	<div id="marker">
-  		<div class="markerInfoWrapper">
-  			<div id="markerInfo"> </div>
-  		</div> 
-  	</div> 
-  	{{> showGoalLine}}
-  </div> 
+<!-- <div id="mouseEvents">
+	<div>minTotalDays: <span id="minTotalDays"></span></div> 
+	<div>currentMousePosition: <span id="currentMousePosition"></span></div> 
+	<div>placeHolderTotalDays: <span id="placeHolderTotalDays"></span></div> 
+	<div>Year: <span id="year"></span></div> 
+	<div>DaysLeft:  <span id="daysLeft"></span></div> 
+	<div>Month:  <span id="month"></span></div> 
+	<div>Day: <span id="day"></span></div>
+	<div>object: <span id="object"></span></div>
+</div>  -->
+<div id="menuWrapper">
+	<div class='settingsWrapper'>
+		<div class="settingsInner">
+			<div class="settingsMenu perspectiveMenu">
+				<div class="settingsTitle">Perspective </div> 
+				<ul class="settings">
+					<li> <span class="settingLabel"> 1 day : </span>   
+							<input type="radio" id="radio1_day_1" name="day" value="1" checked>
+							<label class="radio1" for="radio1_day_1">1px</label>
+
+							<input type="radio" id="radio2_day_2" name="day" value="2">
+							<label class="radio2" for="radio2_day_2">2px</label>
+
+							<input type="radio"  id="radio3_day_3" name="day" value="3">
+							<label class="radio3" for="radio3_day_3">5px</label>
+					</li> 
+					<li>  <span class="settingLabel"> font : </span>   
+							<input type="radio" id="radio1_font_1" name="font" value="1" checked>
+							<label class="radio1" for="radio1_font_1">small</label>
+
+							<input type="radio" id="radio2_font_2" name="font" value="2">
+							<label class="radio2" for="radio2_font_2" > medium </label>
+
+							<input type="radio"  id="radio3_font_3" name="font" value="3">
+							<label class="radio3" for="radio3_font_3">large</label>
+					</li> 
+				</ul> 
+			</div>
+			<div class="settingsMenu metricsMenu">
+				<div class="settingsTitle"> Metrics </div> 
+				<ul class="settings">
+					<li>  <span class="settingLabel"> countdown till goal : </span>   
+							<input type="radio" id="radio1_cd_1" name="cd" value="1" checked>
+							<label class="radio1" for="radio1_cd_1">show</label>
+
+							<input type="radio" id="radio2_cd_2" name="cd" value="2">
+							<label class="radio2" for="radio2_cd_2">hide</label>
+					</li> 
+					<li>  <span class="settingLabel"> show description : </span>   
+							<input type="radio" id="radio1_desc_1" name="desc" value="1" checked>
+							<label class="radio1" for="radio1_desc_1">show</label>
+
+							<input type="radio" id="radio2_desc_2" name="desc" value="2">
+							<label class="radio2" for="radio2_desc_2">hide</label>
+					</li> 
+					<li>  <span class="settingLabel"> date format : </span>   
+							<input type="radio" id="radio1_date_1" name="date" value="1" checked>
+							<label class="radio1" for="radio1_date_1">days left</label>
+
+							<input type="radio" id="radio2_date_2" name="date" value="2">
+							<label class="radio2" for="radio2_date_2">dd/mm/yy</label>
+
+							<input type="radio"  id="radio3_date_3" name="date" value="3">
+							<label class="radio3" for="radio3_date_3">descriptive</label>
+					</li> 
+				</ul> 
+			</div> 
+		</div> 
+	</div>
+	<div id="menuBarWrapper">
+		<div class="menuBarSection menuBarLeft">
+			<a id="menuBarButton" href="#">Menu</a> 
+		</div>
+		<div class="menuBarSection menuBarCenter">
+			<span class="logo">Goal Line </span> 
+		</div> 
+		<div class="menuBarSection menuBarRight">
+			<a id="signButton" href="#">Sign In</a>
+		</div> 
+	</div> 
+</div> 
+<div class="showGoalLineWrapper"> 
+	<!-- <div id="marker">
+		<div class="markerInfoWrapper">
+			<div id="markerInfo"> </div>
+		</div> 
+	</div>  -->
+	{{> showGoalLine}}
+</div> 
 </body>
 
 <template name="addGoalForm">

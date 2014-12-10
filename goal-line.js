@@ -30,7 +30,7 @@ if(Meteor.isClient) {
     var showGoalFired = 0;
                                                         //   
     var calendar =      [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
-    var leapCalendar =  [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var leapCalendar =  [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
 
     function getTotalDay(dateObject) {
 
@@ -185,8 +185,125 @@ if(Meteor.isClient) {
             futureYears += 10; 
         }); 
 
+        $('#menuBarButton').click(function(){
+            $('.settingsWrapper').slideToggle("slow");
+        })
+
+        
+
+        function checkSettings() {
 
 
+            var dayRadio = e.target.day.value; 
+            var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3; 
+
+            switch(dayRadio){
+                case "1":
+                    dayRadioCheck1 = 'checked';
+                    dayRadioCheck2 = null; 
+                    dayRadioCheck3 = null;
+                    break; 
+                case "2":
+                    dayRadioCheck1 = null;
+                    dayRadioCheck2 = 'checked'; 
+                    dayRadioCheck3 = null;
+                    break;  
+                case "3":
+                    dayRadioCheck1 = null;
+                    dayRadioCheck2 = null; 
+                    dayRadioCheck3 = 'checked';
+                    break;  
+            }
+
+            var fontRadio = e.target.dont.value; 
+            var fontRadioCheck1, fontRadioCheck2, fontRadioCheck3; 
+
+            switch(fontRadio) {
+                case "1":
+                    fontRadioCheck1 = 'checked';
+                    fontRadioCheck2 = null; 
+                    fontRadioCheck3 = null;
+                    break; 
+                case "2":
+                    fontRadioCheck1 = null;
+                    fontRadioCheck2 = 'checked'; 
+                    fontRadioCheck3 = null;
+                    break;  
+                case "3":
+                    fontRadioCheck1 = null;
+                    fontRadioCheck2 = null; 
+                    fontRadioCheck3 = 'checked';
+                    break;  
+            }
+
+            var cdRadio = e.target.cd.value; 
+            var cdRadioCheck1, cdRadioCheck2, cdRadioCheck3; 
+
+            switch(cdRadio) {
+                case "1":
+                    cdRadioCheck1 = 'checked';
+                    cdRadioCheck2 = null; 
+                    cdRadioCheck3 = null;
+                    break; 
+                case "2":
+                    cdRadioCheck1 = null;
+                    cdRadioCheck2 = 'checked'; 
+                    cdRadioCheck3 = null;
+                    break; 
+            }
+
+            var descRadio = e.target.desc.value; 
+            var descRadioCheck1, descRadioCheck2, descRadioCheck3;
+
+            switch(descRadio) {
+                case "1":
+                    descRadioCheck1 = 'checked';
+                    descRadioCheck2 = null; 
+                    descRadioCheck3 = null;
+                    break; 
+                case "2":
+                    descRadioCheck1 = null;
+                    descRadioCheck2 = 'checked'; 
+                    descRadioCheck3 = null;
+                    break;
+            }
+
+            var dateRadio = e.target.date.value;
+            var dateRadioCheck1, dateRadioCheck2, dateRadioCheck3;
+
+            switch(descRadio) {
+                case "1":
+                    dateRadioCheck1 = 'checked';
+                    dateRadioCheck2 = null; 
+                    dateRadioCheck3 = null;
+                    break; 
+                case "2":
+                    dateRadioCheck1 = null;
+                    dateRadioCheck2 = 'checked'; 
+                    dateRadioCheck3 = null;
+                    break;  
+                case "3":
+                    dateRadioCheck1 = null;
+                    dateRadioCheck2 = null; 
+                    dateRadioCheck3 = 'checked';
+                    break;  
+            }
+
+            console.log(dayRadioCheck1);
+            console.log(dayRadioCheck2);
+            console.log(dayRadioCheck3);
+            console.log(fontRadioCheck1);
+            console.log(fontRadioCheck2);
+            console.log(fontRadioCheck3);
+            console.log(cdRadioCheck1);
+            console.log(cdRadioCheck2);
+            console.log(descRadioCheck3);
+            console.log(descRadioCheck1);
+            console.log(dateRadioCheck2);
+            console.log(dateRadioCheck3);
+            console.log(dateRadioCheck1);
+
+        }
 
     }); 
 
@@ -442,7 +559,9 @@ if(Meteor.isServer) {
             }})
         },
         updateSettings: function() {
-            settings.update({}); 
+            settings.update({
+
+            }); 
         },
         initSettings: function(){
             settings.insert({
