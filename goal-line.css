@@ -246,6 +246,7 @@ body {
 						font-size: 12px;
 					}
 
+
 				.flyFormInput {
 					direction: inline-block;
 					display: none;
@@ -268,6 +269,85 @@ body {
 					.flyFormInput:-ms-input-placeholder {  
 					   color: black;  
 					} 
+
+				.priority {
+					margin: 10px 0 0 2px;
+				}
+
+					.priority input[type="radio"] {
+					    display: none;
+					}
+
+					
+					.priority label {
+					    display:inline-block;
+					    height: 10px;
+					    width: 10px;
+					    
+					    border-radius: 50px;
+					    overflow: hidden;
+					}
+
+						.priority label.radio1 {
+							border: 3px solid #ddd;
+						}
+
+						.priority label.radio2 {
+							border: 3px solid grey;
+						}
+
+						.priority label.radio3 {
+							border: 3px solid #515151;
+						}
+
+						.radioInner {
+							width: 30px;
+							height: 30px;
+						}
+				
+							.radioInner1 {
+								background: white;
+							}
+
+							.radioInner2 {
+								background: white;
+							}
+
+							.radioInner3 {
+								background: white;
+							}
+
+
+					.priority input[type="radio"]:checked + label .radioInner1 {
+					    background-color:#ddd;
+					}
+
+					.priority input[type="radio"]:checked + label .radioInner2 {
+					    background-color:grey;
+					}
+
+					.priority input[type="radio"]:checked + label .radioInner3 {
+					    background-color:#515151;
+					}
+
+
+
+					.radio {
+
+					}
+
+						.radio1 {
+
+						}
+
+						.radio2 {
+
+						}
+
+						.radio3 {
+
+						}
+
 
 				.buttons {
 					margin: 10px 0 0 0;

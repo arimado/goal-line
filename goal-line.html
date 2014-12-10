@@ -82,6 +82,16 @@
 						<!-- <div class="goalRelativePosition"> 
 							<span class="flyGoalPosition">Position: {{ relativePosition }} </span>
 						</div>  -->
+						<div class="priority">
+							<input type="radio" id="radio1_{{_id}}" name="radios" value="default" >
+							<label class="radio1" for="radio1_{{_id}}"><div class="radioInner radioInner1"></div></label>
+
+							<input type="radio" id="radio2_{{_id}}" name="radios" value="important" >
+							<label class="radio2" for="radio2_{{_id}}"><div class="radioInner radioInner2"></div></label>
+
+							<input type="radio"  id="radio3_{{_id}}" name="radios" value="veryImportant" >
+							<label class="radio3" for="radio3_{{_id}}"><div class="radioInner radioInner3"></div></label>
+						</div>
 						<div class="buttons {{ _id }}"> 
 							<input type="button" class="button" id="removeButton" value="-">
 							<input type="submit" class="button" id="updateButton" value="+"> 

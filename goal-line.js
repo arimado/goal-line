@@ -30,7 +30,7 @@ if(Meteor.isClient) {
     var showGoalFired = 0;
                                                         //   
     var calendar =      [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
-    var leapCalendar =  [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];  
+    var leapCalendar =  [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     function getTotalDay(dateObject) {
 
@@ -166,7 +166,8 @@ if(Meteor.isClient) {
         });
 
         $('#goalLineRight').click(function(){
-            console.log('goaline clicked');
+             
+            return false; 
         })
 
         $('#zoomIn').click(function(){
@@ -188,6 +189,9 @@ if(Meteor.isClient) {
             console.log('past');
             futureYears += 10; 
         }); 
+
+
+
 
     }); 
 
@@ -263,6 +267,7 @@ if(Meteor.isClient) {
             //update days left
 
             for(i = 0; i < goals.find().fetch().length; i++) {
+
                 var currentGoalId = goals.find().fetch()[i]._id; 
                 var currentGoalTotalDays = goals.find().fetch()[i].goalTotalDay;
                 var currentGoalDaysLeft = parseInt(goals.find().fetch()[i].goalTotalDay - currentTotalDay);
@@ -270,13 +275,15 @@ if(Meteor.isClient) {
 
             }
 
-          showGoalFired++; 
+            showGoalFired++; 
 
-            //checks if the showGoal function is finished firing 
 
             checkShowGoalFinish(); 
+
+
             
             function checkShowGoalFinish() {  
+
 
                 $('.goal').hover(
 
@@ -293,7 +300,7 @@ if(Meteor.isClient) {
                         $(this).find('.flyGoalDescription').css({display: 'inline-block'});
                         $(this).find('.buttons').css({display: 'none'});
                     }
-                );
+                ); 
             }
 
             var intialPostElement = goals.findOne({initialName: 'initialDate'});
@@ -302,7 +309,8 @@ if(Meteor.isClient) {
                 
             } else {
                  $('.' + intialPostElement._id).css({display: "none"});
-            } 
+            }
+
 
             return { 
                 getGoals:goals.find(),  
@@ -328,7 +336,8 @@ if(Meteor.isClient) {
          {
             e.preventDefault();
 
-            //parsing user input data 
+            //parsing user date data 
+            var goalPriority = e.target.radios.value;
             var goalName = template.find('.flyFormGoalName.' + this._id).value; 
             var goalDescription = template.find('.flyFormGoalDescription.' + this._id).value; 
             var goalYear = parseInt(template.find('.flyFormGoalYear.' + this._id).value); 
@@ -348,7 +357,7 @@ if(Meteor.isClient) {
                 relativePosition = goalTotalDay; 
             }
 
-            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition); 
+            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority); 
             
         },
         //get f
@@ -362,23 +371,23 @@ if(Meteor.isClient) {
             var currentTotalDay = getTotalDay(currentDay); 
           
             //add to database with parsed date 
-            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay); 
+            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay, 'default', null, null, null); 
         },
-        'click .goal':function() {
-           $('.flyFormInput.' + this._id).css({display: 'inline-block'});
-           $('.buttons.' + this._id).css({display: 'block'});
-           $('.' + this._id + ' .flyGoalName').css({display: 'none'});
-           $('.' + this._id + ' .flyGoalDescription').css({display: 'none'});
-        }, 
+        // 'click .goal':function() {
+        //    $('.flyFormInput.' + this._id).css({display: 'inline-block'});
+        //    $('.buttons.' + this._id).css({display: 'block'});
+        //    $('.' + this._id + ' .flyGoalName').css({display: 'none'});
+        //    $('.' + this._id + ' .flyGoalDescription').css({display: 'none'});
+        // }, 
         'click #goalLineRight':function() {
-            console.log('goalineright clicked');
+
         }
     });
 }
 
 if(Meteor.isServer) {
     Meteor.methods({
-        addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay){
+        addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3){
             goals.insert({
                 initialName: intialName,
                 goalName: goalName, 
@@ -388,7 +397,11 @@ if(Meteor.isServer) {
                 goalMonth: goalDate.getMonth() + 1,
                 goalDay: goalDate.getDate(),
                 goalTotalDay: goalTotalDay,   
-                goalDaysLeft: parseInt(goalTotalDay - currentTotalDay)
+                goalDaysLeft: parseInt(goalTotalDay - currentTotalDay),
+                goalPriority: goalPriority,
+                check1: check1,
+                check2: check2,
+                check3: check3
             });
         }, 
         addRelativePosition:function(currentID, relativePosition) {
@@ -400,7 +413,7 @@ if(Meteor.isServer) {
         removeInitGoal:function(intialName){
             goals.remove({initialName: intialName});
         },
-        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition) {
+        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority) {
             goals.update({_id: currentID}, {$set: {
                 goalName: goalName,
                 goalDescription: goalDescription,
@@ -409,7 +422,8 @@ if(Meteor.isServer) {
                 goalMonth: goalDate.getMonth() + 1, 
                 goalDay: goalDate.getDate(), 
                 goalTotalDay: goalTotalDay,
-                relativePosition: relativePosition
+                relativePosition: relativePosition,
+                goalPriority: goalPriority
             }})
         },
         updateSettings: function() {
