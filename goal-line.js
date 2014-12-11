@@ -69,7 +69,7 @@ if(Meteor.isClient) {
        // get Year     
        var goalYear = totalDays / 365.26;
        var goalYearParsed = parseInt(goalYear); 
-       
+
        //get Month and Days
 
        //set calendar
@@ -129,7 +129,6 @@ if(Meteor.isClient) {
         } else {
             console.log('settings allready intiated');
         }
-
     }
 
     var initialDate = new Date(); 
@@ -208,10 +207,19 @@ if(Meteor.isClient) {
     // ------ Meteor functions ------------
     // **********************************
 
-    Template.menu.events({
-        'click li':function(e, template) {
+    Template.menu.helpers({
+        data: function() {
+            var objectArray = [{checked1: null, checked2: null, checked3: 'checked' }]; 
+            return objectArray[0]; 
+        }
+    })
 
-            var dayRadio = e.target.day.value; 
+    Template.menu.events({
+        'click label':function(e, template) {
+            // var dayRadio = e.target.day.value; 
+            var dayRadio = $('input:radio[name="day"]:checked').val();
+            console.log(dayRadio); 
+
             var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3; 
 
             switch(dayRadio){
@@ -232,7 +240,7 @@ if(Meteor.isClient) {
                     break;  
             }
 
-            var fontRadio = e.target.font.value; 
+            var fontRadio = $('input:radio[name="font"]:checked').val();
             var fontRadioCheck1, fontRadioCheck2, fontRadioCheck3; 
 
             switch(fontRadio) {
@@ -253,7 +261,7 @@ if(Meteor.isClient) {
                     break;  
             }
 
-            var cdRadio = e.target.cd.value; 
+            var cdRadio = $('input:radio[name="cd"]:checked').val();
             var cdRadioCheck1, cdRadioCheck2, cdRadioCheck3; 
 
             switch(cdRadio) {
@@ -269,7 +277,7 @@ if(Meteor.isClient) {
                     break; 
             }
 
-            var descRadio = e.target.desc.value; 
+            var descRadio = $('input:radio[name="desc"]:checked').val();
             var descRadioCheck1, descRadioCheck2, descRadioCheck3;
 
             switch(descRadio) {
@@ -285,7 +293,7 @@ if(Meteor.isClient) {
                     break;
             }
 
-            var dateRadio = e.target.date.value;
+            var dateRadio = $('input:radio[name="date"]:checked').val();
             var dateRadioCheck1, dateRadioCheck2, dateRadioCheck3;
 
             switch(descRadio) {
@@ -306,19 +314,6 @@ if(Meteor.isClient) {
                     break;  
             }
 
-            console.log(dayRadioCheck1);
-            console.log(dayRadioCheck2);
-            console.log(dayRadioCheck3);
-            console.log(fontRadioCheck1);
-            console.log(fontRadioCheck2);
-            console.log(fontRadioCheck3);
-            console.log(cdRadioCheck1);
-            console.log(cdRadioCheck2);
-            console.log(descRadioCheck3);
-            console.log(descRadioCheck1);
-            console.log(dateRadioCheck2);
-            console.log(dateRadioCheck3);
-            console.log(dateRadioCheck1);
         }
     })
 
@@ -520,6 +515,9 @@ if(Meteor.isClient) {
 }
 
 if(Meteor.isServer) {
+
+    
+
     Meteor.methods({
         addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3){
             goals.insert({
@@ -568,11 +566,22 @@ if(Meteor.isServer) {
 
             }); 
         },
-        initSettings: function(){
+        initSettings: function(dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {
             settings.insert({
-                pastYears: pastYears,
-                futureYears: futureYears
-            });
+                dayRadioCheck1: dayRadioCheck1,
+                dayRadioCheck2: dayRadioCheck2,
+                dayRadioCheck3: dayRadioCheck3,
+                fontRadioCheck1: fontRadioCheck1, 
+                fontRadioCheck2: fontRadioCheck2,
+                fontRadioCheck3: fontRadioCheck3, 
+                cdRadioCheck1: cdRadioCheck1,
+                cdRadioCheck2: cdRadioCheck2,
+                descRadioCheck1: descRadioCheck1,
+                descRadioCheck2: descRadioCheck2,
+                dateRadioCheck3: dateRadioCheck3,
+                dateRadioCheck1: dateRadioCheck1,
+                dateRadioCheck2: dateRadioCheck2
+            }); 
         }
     });
 }
