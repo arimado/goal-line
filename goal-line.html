@@ -26,6 +26,9 @@
 </div> 
 </body>
 
+
+
+
 <template name="menu"> 
 	{{initSettings}}
 	<div id="menuWrapper">
@@ -35,23 +38,23 @@
 					<div class="settingsTitle">Perspective </div> 
 					<ul class="settings">
 						<li> 	<span class="settingLabel"> 1 day : </span>   
-								<input type="radio" id="radio1_day_1" name="day" value="1" {{data.checked1}}>
+								<input type="radio" id="radio1_day_1" name="day" value="1" {{data.dayRadioCheck1}}>
 								<label class="radio1" for="radio1_day_1">1px</label>
 
-								<input type="radio" id="radio2_day_2" name="day" value="2" {{data.checked3}}>
+								<input type="radio" id="radio2_day_2" name="day" value="2" {{data.dayRadioCheck2}}>
 								<label class="radio2" for="radio2_day_2">2px</label>
 
-								<input type="radio"  id="radio3_day_3" name="day" value="3" {{data.checked2}}>
+								<input type="radio"  id="radio3_day_3" name="day" value="3" {{data.dayRadioCheck3}}>
 								<label class="radio3" for="radio3_day_3">5px</label>
 						</li> 
 						<li>  <span class="settingLabel"> font : </span>   
-								<input type="radio" id="radio1_font_1" name="font" value="1" checked>
+								<input type="radio" id="radio1_font_1" name="font" value="1" {{data.fontRadioCheck1}}>
 								<label class="radio1" for="radio1_font_1">small</label>
 
-								<input type="radio" id="radio2_font_2" name="font" value="2">
+								<input type="radio" id="radio2_font_2" name="font" value="2" {{data.fontRadioCheck2}}>
 								<label class="radio2" for="radio2_font_2" > medium </label>
 
-								<input type="radio"  id="radio3_font_3" name="font" value="3">
+								<input type="radio"  id="radio3_font_3" name="font" value="3" {{data.fontRadioCheck3}}>
 								<label class="radio3" for="radio3_font_3">large</label>
 						</li> 
 					</ul> 
@@ -60,27 +63,27 @@
 					<div class="settingsTitle"> Metrics </div> 
 					<ul class="settings">
 						<li>  <span class="settingLabel"> countdown till goal : </span>   
-								<input type="radio" id="radio1_cd_1" name="cd" value="1" checked>
+								<input type="radio" id="radio1_cd_1" name="cd" value="1" {{data.cdRadioCheck1}}>
 								<label class="radio1" for="radio1_cd_1">show</label>
 
-								<input type="radio" id="radio2_cd_2" name="cd" value="2">
+								<input type="radio" id="radio2_cd_2" name="cd" value="2" {{data.cdRadioCheck2}}>
 								<label class="radio2" for="radio2_cd_2">hide</label>
 						</li> 
 						<li>  <span class="settingLabel"> show description : </span>   
-								<input type="radio" id="radio1_desc_1" name="desc" value="1" checked>
+								<input type="radio" id="radio1_desc_1" name="desc" value="1" {{data.descRadioCheck1}}>
 								<label class="radio1" for="radio1_desc_1">show</label>
 
-								<input type="radio" id="radio2_desc_2" name="desc" value="2">
+								<input type="radio" id="radio2_desc_2" name="desc" value="2" {{data.descRadioCheck2}}>
 								<label class="radio2" for="radio2_desc_2">hide</label>
 						</li> 
 						<li>  <span class="settingLabel"> date format : </span>   
-								<input type="radio" id="radio1_date_1" name="date" value="1" checked>
+								<input type="radio" id="radio1_date_1" name="date" value="1" {{data.dateRadioCheck1}}>
 								<label class="radio1" for="radio1_date_1">days left</label>
 
-								<input type="radio" id="radio2_date_2" name="date" value="2">
+								<input type="radio" id="radio2_date_2" name="date" value="2" {{data.dateRadioCheck2}}>
 								<label class="radio2" for="radio2_date_2">dd/mm/yy</label>
 
-								<input type="radio"  id="radio3_date_3" name="date" value="3">
+								<input type="radio"  id="radio3_date_3" name="date" value="3" {{data.dateRadioCheck3}}>
 								<label class="radio3" for="radio3_date_3">descriptive</label>
 						</li> 
 					</ul> 
@@ -95,7 +98,9 @@
 				<span class="logo">Goal Line </span> 
 			</div> 
 			<div class="menuBarSection menuBarRight">
-				<a id="signButton" href="#">Sign In</a>
+				<a id="signButton" href="#">Sign OUT</a>
+				{{> login}}
+				{{> register}}
 			</div> 
 		</div> 
 	</div> 
@@ -199,3 +204,44 @@
 		</div> 
 	</div> 
 </template> 
+
+
+<template name="login"> 
+	<form id="loginForm" action="action">
+		<input type="email" id="loginEmail" name="loginEmail"/> 
+		<input type="password" id="loginPassword" name="loginPassword"/> 
+		<input type="submit" id="loginButton" value="Sign In" name="loginButton"/> 
+	</form>
+</template> 
+<template name="register">
+	<form id="registerForm" action="action"> 
+		<input type="email" id="registerEmail" name="registerEmail"/> 
+		<input type="password" id="registerPassword" name="registerPassword"/> 
+		<input type="submit" id="registerButton" value="register" name="registerButton"/> 
+	</form> 
+</template> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

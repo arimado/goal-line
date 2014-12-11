@@ -7,3 +7,6 @@ meteor-platform
 insecure
 jquery
 fortawesome:fontawesome
+accounts-password
+accounts-base
+

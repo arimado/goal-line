@@ -20,34 +20,39 @@ if(Meteor.isClient) {
     }); 
 
     Meteor.subscribe('settings', function() {
+       
+    });
+
+    function initSettings() {
         console.log('settings length before  - ' + settings.find().fetch().length);
 
         var dayRadioCheck1 = null; 
-            var dayRadioCheck2 = 'checked'; 
-            var dayRadioCheck3 = null; 
+        var dayRadioCheck2 = 'checked'; 
+        var dayRadioCheck3 = null; 
 
-            var fontRadioCheck1 = null; 
-            var fontRadioCheck2 = 'checked'; 
-            var fontRadioCheck3 = null; 
+        var fontRadioCheck1 = null; 
+        var fontRadioCheck2 = 'checked'; 
+        var fontRadioCheck3 = null; 
 
-            var cdRadioCheck1 = null; 
-            var cdRadioCheck2 = 'checked'; 
+        var cdRadioCheck1 = null; 
+        var cdRadioCheck2 = 'checked'; 
 
-            var descRadioCheck1 = null; 
-            var descRadioCheck2 = 'checked'; 
+        var descRadioCheck1 = null; 
+        var descRadioCheck2 = 'checked'; 
 
-            var dateRadioCheck1 = null; 
-            var dateRadioCheck2 = 'checked'; 
-            var dateRadioCheck3 = null; 
+        var dateRadioCheck1 = null; 
+        var dateRadioCheck2 = 'checked'; 
+        var dateRadioCheck3 = null; 
 
-            if(settings.find().fetch().length < 1) {
-                Meteor.call('initSettings', dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3); 
-            }  
+        if(settings.find().fetch().length < 1) {
+            Meteor.call('initSettings', dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3); 
+        }
 
-            console.log('settings length after  - ' + settings.find().fetch().length);
-    });
+        console.log('settings length after  - ' + settings.find().fetch().length);
+    }
 
-    
+
+  
 
     Meteor.call('removeInitGoal', "initialDate"); 
 
@@ -153,17 +158,17 @@ if(Meteor.isClient) {
         $('#line').css({height: lineHeight}, 3000); 
     }
 
-    function initSettings() {
+    // function initSettings() {
 
-        settingLength = settings.find().fetch().length; 
-        console.log('settingLength - ' + settingLength); 
-        if(settings.find().fetch().length < 1) {
-            console.log('settings initiated'); 
-            settings.insert({pastYearsAdd: 5, futureYearsAdd: 15}); 
-        } else {
-            console.log('settings allready intiated');
-        }
-    }
+    //     settingLength = settings.find().fetch().length; 
+    //     console.log('settingLength - ' + settingLength); 
+    //     if(settings.find().fetch().length < 1) {
+    //         console.log('settings initiated'); 
+    //         settings.insert({pastYearsAdd: 5, futureYearsAdd: 15}); 
+    //     } else {
+    //         console.log('settings allready intiated');
+    //     }
+    // }
 
     var initialDate = new Date(); 
     var intialTotalDay = getTotalDay(initialDate); 
@@ -222,10 +227,6 @@ if(Meteor.isClient) {
             $('.settingsWrapper').slideToggle("slow");
         });
 
-
-        function checkSettings() {
-        }
-
     }); 
 
     setInterval(function(){
@@ -234,48 +235,69 @@ if(Meteor.isClient) {
         }); 
     }, 1000); 
 
-    // **********************************
+    // ********************************************************************
     // ------ Meteor functions ------------
-    // **********************************
+    // ********************************************************************
+
+    // ---------- MENU --------------
 
     Template.menu.helpers({
         initSettings: function() {
 
-            
-            
         }, 
         data: function() {
-            var objectArray = [{checked1: null, checked2: null, checked3: 'checked' }]; 
-
-            return objectArray[0]; 
+            return settings.find().fetch()[0]; 
         }
     })
 
     Template.menu.events({
         'click label':function(e, template) {
             // var dayRadio = e.target.day.value; 
-            var dayRadio = $('input:radio[name="day"]:checked').val();
-            console.log(dayRadio); 
 
-            var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3; 
+            console.log(e); 
+            console.log(e.target.previousElementSibling.value); 
 
-            switch(dayRadio){
-                case "1":
-                    dayRadioCheck1 = 'checked';
-                    dayRadioCheck2 = null; 
-                    dayRadioCheck3 = null;
-                    break; 
-                case "2":
-                    dayRadioCheck1 = null;
-                    dayRadioCheck2 = 'checked'; 
-                    dayRadioCheck3 = null;
-                    break;  
-                case "3":
-                    dayRadioCheck1 = null;
-                    dayRadioCheck2 = null; 
-                    dayRadioCheck3 = 'checked';
-                    break;  
-            }
+            var currentRadio = e.target.previousElementSibling; 
+            var currentRadioValue = e.target.previousElementSibling.value;
+            var currentRadioId = e.target.previousElementSibling.id;
+
+
+            // day
+
+            if(currentRadioId == "radio1_day_1") {
+                dayRadioCheck1 = 'checked';
+                dayRadioCheck2 = null; 
+                dayRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio2_day_2") {
+                dayRadioCheck1 = null;
+                dayRadioCheck2 = 'checked'; 
+                dayRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio3_day_3") {
+                dayRadioCheck1 = null;
+                dayRadioCheck2 = null; 
+                dayRadioCheck3 = 'checked';
+            } 
+
+            //font 
+
+            if(currentRadioId == "radio1_font_1") {
+                fontRadioCheck1 = 'checked';
+                fontRadioCheck2 = null; 
+                fontRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio2_font_2") {
+                fontRadioCheck1 = null;
+                fontRadioCheck2 = 'checked'; 
+                fontRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio3_font_3") {
+                fontRadioCheck1 = null;
+                fontRadioCheck2 = null; 
+                fontRadioCheck3 = 'checked';
+            } 
+
 
             var fontRadio = $('input:radio[name="font"]:checked').val();
             var fontRadioCheck1, fontRadioCheck2, fontRadioCheck3; 
@@ -333,7 +355,7 @@ if(Meteor.isClient) {
             var dateRadio = $('input:radio[name="date"]:checked').val();
             var dateRadioCheck1, dateRadioCheck2, dateRadioCheck3;
 
-            switch(descRadio) {
+            switch(dateRadio) {
                 case "1":
                     dateRadioCheck1 = 'checked';
                     dateRadioCheck2 = null; 
@@ -351,8 +373,61 @@ if(Meteor.isClient) {
                     break;  
             } 
 
+            var currentID = Meteor.userId();
+
+
+            Meteor.call('updateSettings', currentID, dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2 );
+
+
         }
     })
+
+    // ---------- ACCOUNTS --------------
+
+    Template.login.events({
+        'submit #loginForm':function(e) {
+            e.preventDefault(); 
+
+            var email = e.target.loginEmail.value; 
+            var password = e.target.loginPassword.value; 
+
+            //validate here 
+
+            Meteor.loginWithPassword(email, password, function(err){
+                if(err) {
+                    console.log(err)
+                } else {
+                    console.log('login successfull'); 
+                    initSettings(); 
+                }      
+            })
+
+            return false; //to prevent form from reloading the page
+        }
+    }); 
+
+    Template.register.events({
+         'submit #registerForm':function(e) {
+            e.preventDefault(); 
+
+            var email = e.target.registerEmail.value; 
+            var password = e.target.registerPassword.value; 
+
+            //validate here 
+
+            Accounts.createUser({email: email, password: password}, function(err){
+                if(err) {
+                    console.log(err);
+                } else {
+                    console.log('register successfull'); 
+                }
+            })
+
+            return false; //to prevent form from reloading the page
+        }
+    });
+
+    // ---------- GOAL --------------
 
     // Add Goal Form 
     Template.addGoalForm.events({
@@ -553,18 +628,22 @@ if(Meteor.isClient) {
 
 if(Meteor.isServer) {
 
+    console.log(Meteor.users.find().fetch()); 
+    console.log(settings.find().fetch()); 
+
     Meteor.publish('goals', function(){
         this.ready();
-        return goals.find(); 
+        return goals.find({createdBy: this.userId}); 
     })
 
     Meteor.publish('settings', function(){
-        return settings.find(); 
+        return settings.find({createdBy: this.userId}); 
     })
 
     Meteor.methods({
         addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3){
             goals.insert({
+                createdBy: this.userId,
                 initialName: intialName,
                 goalName: goalName, 
                 goalDescription: goalDescription,
@@ -606,7 +685,7 @@ if(Meteor.isServer) {
             }})
         },
         updateSettings: function(currentID, dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {
-                settings.update({_id: currentID}, {$set: {
+                settings.update({createdBy: currentID}, {$set: {
                     dayRadioCheck1: dayRadioCheck1,
                     dayRadioCheck2: dayRadioCheck2,
                     dayRadioCheck3: dayRadioCheck3,
