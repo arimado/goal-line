@@ -15,6 +15,40 @@ if(Meteor.isClient) {
     // ------ FRONT END JS ------------
     // **********************************
 
+    Meteor.subscribe('goals', function(){
+        console.log(goals.find().fetch());
+    }); 
+
+    Meteor.subscribe('settings', function() {
+        console.log('settings length before  - ' + settings.find().fetch().length);
+
+        var dayRadioCheck1 = null; 
+            var dayRadioCheck2 = 'checked'; 
+            var dayRadioCheck3 = null; 
+
+            var fontRadioCheck1 = null; 
+            var fontRadioCheck2 = 'checked'; 
+            var fontRadioCheck3 = null; 
+
+            var cdRadioCheck1 = null; 
+            var cdRadioCheck2 = 'checked'; 
+
+            var descRadioCheck1 = null; 
+            var descRadioCheck2 = 'checked'; 
+
+            var dateRadioCheck1 = null; 
+            var dateRadioCheck2 = 'checked'; 
+            var dateRadioCheck3 = null; 
+
+            if(settings.find().fetch().length < 1) {
+                Meteor.call('initSettings', dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3); 
+            }  
+
+            console.log('settings length after  - ' + settings.find().fetch().length);
+    });
+
+    
+
     Meteor.call('removeInitGoal', "initialDate"); 
 
     
@@ -190,9 +224,6 @@ if(Meteor.isClient) {
 
 
         function checkSettings() {
-
-            
-
         }
 
     }); 
@@ -208,8 +239,14 @@ if(Meteor.isClient) {
     // **********************************
 
     Template.menu.helpers({
+        initSettings: function() {
+
+            
+            
+        }, 
         data: function() {
             var objectArray = [{checked1: null, checked2: null, checked3: 'checked' }]; 
+
             return objectArray[0]; 
         }
     })
@@ -262,7 +299,7 @@ if(Meteor.isClient) {
             }
 
             var cdRadio = $('input:radio[name="cd"]:checked').val();
-            var cdRadioCheck1, cdRadioCheck2, cdRadioCheck3; 
+            var cdRadioCheck1, cdRadioCheck2; 
 
             switch(cdRadio) {
                 case "1":
@@ -278,7 +315,7 @@ if(Meteor.isClient) {
             }
 
             var descRadio = $('input:radio[name="desc"]:checked').val();
-            var descRadioCheck1, descRadioCheck2, descRadioCheck3;
+            var descRadioCheck1, descRadioCheck2;
 
             switch(descRadio) {
                 case "1":
@@ -312,7 +349,7 @@ if(Meteor.isClient) {
                     dateRadioCheck2 = null; 
                     dateRadioCheck3 = 'checked';
                     break;  
-            }
+            } 
 
         }
     })
@@ -516,7 +553,14 @@ if(Meteor.isClient) {
 
 if(Meteor.isServer) {
 
-    
+    Meteor.publish('goals', function(){
+        this.ready();
+        return goals.find(); 
+    })
+
+    Meteor.publish('settings', function(){
+        return settings.find(); 
+    })
 
     Meteor.methods({
         addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3){
@@ -561,13 +605,26 @@ if(Meteor.isServer) {
                 check3: check3
             }})
         },
-        updateSettings: function() {
-            settings.update({
-
-            }); 
+        updateSettings: function(currentID, dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {
+                settings.update({_id: currentID}, {$set: {
+                    dayRadioCheck1: dayRadioCheck1,
+                    dayRadioCheck2: dayRadioCheck2,
+                    dayRadioCheck3: dayRadioCheck3,
+                    fontRadioCheck1: fontRadioCheck1, 
+                    fontRadioCheck2: fontRadioCheck2,
+                    fontRadioCheck3: fontRadioCheck3, 
+                    cdRadioCheck1: cdRadioCheck1,
+                    cdRadioCheck2: cdRadioCheck2,
+                    descRadioCheck1: descRadioCheck1,
+                    descRadioCheck2: descRadioCheck2,
+                    dateRadioCheck3: dateRadioCheck3,
+                    dateRadioCheck1: dateRadioCheck1,
+                    dateRadioCheck2: dateRadioCheck2
+                }}); 
         },
-        initSettings: function(dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {
+        initSettings: function(dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {
             settings.insert({
+                createdBy: this.userId,
                 dayRadioCheck1: dayRadioCheck1,
                 dayRadioCheck2: dayRadioCheck2,
                 dayRadioCheck3: dayRadioCheck3,
