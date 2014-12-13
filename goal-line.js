@@ -22,7 +22,7 @@ if(Meteor.isClient) {
     var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3; 
 
     Meteor.subscribe('settings', function() {
-       savedSettings(); 
+       
     });
 
     function savedSettings() {
@@ -421,7 +421,7 @@ if(Meteor.isClient) {
                     console.log(err)
                 } else {
                     console.log('login successfull'); 
-                    initSettings(); 
+                   savedSettings(); 
                 }      
             })
 
@@ -443,6 +443,7 @@ if(Meteor.isClient) {
                     console.log(err);
                 } else {
                     console.log('register successfull'); 
+                    initSettings(); 
                 }
             })
 
@@ -595,7 +596,7 @@ if(Meteor.isClient) {
 
             //parsing user date data 
             var goalPriority = e.target.radios.value; 
-            var check1, check2, check3;
+            var check1, check2, check3, priorityColor;
 
             console.log(goalPriority); 
 
@@ -604,16 +605,19 @@ if(Meteor.isClient) {
                     check1 = 'checked';
                     check2 = null; 
                     check3 = null;
+                    priorityColor = '#ddd';
                     break; 
                 case "2":
                     check1 = null;
                     check2 = 'checked'; 
                     check3 = null;
+                    priorityColor = 'grey';
                     break;  
                 case "3":
                     check1 = null;
                     check2 = null; 
                     check3 = 'checked';
+                    priorityColor = '#515151';
                     break;  
             }
 
@@ -636,8 +640,11 @@ if(Meteor.isClient) {
                 relativePosition = goalTotalDay; 
             }
 
-            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3); 
+            Meteor.call('updateGoal', this._id, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3, priorityColor); 
             
+        },
+        'click .priority .radio':function() {
+            console.log('radio clicked'); 
         },
         //get f
         'click #goalLineLeft':function(){
@@ -645,12 +652,12 @@ if(Meteor.isClient) {
             //reverse parse 
             var placeholderTotalDay = (currentMousePosition / globalZoom) + minTotalDays;
             var date = getDate(placeholderTotalDay); 
-            
+            var priorityColor = '#ddd'; 
             var currentDay = new Date(); 
             var currentTotalDay = getTotalDay(currentDay); 
           
             //add to database with parsed date 
-            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay, 'default', 'checked', null, null); 
+            Meteor.call('addGoal', 'placeholder name', 'placeholder description', date.object, placeholderTotalDay, null, currentTotalDay, 'default', 'checked', null, null, priorityColor); 
         },
         // 'click .goal':function() {
         //    $('.flyFormInput.' + this._id).css({display: 'inline-block'});
@@ -658,8 +665,8 @@ if(Meteor.isClient) {
         //    $('.' + this._id + ' .flyGoalName').css({display: 'none'});
         //    $('.' + this._id + ' .flyGoalDescription').css({display: 'none'});
         // }, 
-        'click #goalLineRight':function() {
-
+        'click label':function(e, template) {
+            
         }
     });
 }
@@ -679,7 +686,7 @@ if(Meteor.isServer) {
     })
 
     Meteor.methods({
-        addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3){
+        addGoal:function(goalName, goalDescription, goalDate, goalTotalDay, intialName, currentTotalDay, goalPriority, check1, check2, check3, priorityColor){
             goals.insert({
                 createdBy: this.userId,
                 initialName: intialName,
@@ -694,7 +701,8 @@ if(Meteor.isServer) {
                 goalPriority: goalPriority,
                 check1: check1,
                 check2: check2,
-                check3: check3
+                check3: check3,
+                priorityColor: priorityColor
             });
         }, 
         addRelativePosition:function(currentID, relativePosition) {
@@ -706,7 +714,7 @@ if(Meteor.isServer) {
         removeInitGoal:function(intialName){
             goals.remove({initialName: intialName});
         },
-        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3) {
+        updateGoal:function(currentID, goalName, goalDescription, goalDate, goalYear, goalMonth, goalDay, goalTotalDay, relativePosition, goalPriority, check1, check2, check3, priorityColor) {
             goals.update({_id: currentID}, {$set: {
                 goalName: goalName,
                 goalDescription: goalDescription,
@@ -719,7 +727,8 @@ if(Meteor.isServer) {
                 goalPriority: goalPriority,
                 check1: check1,
                 check2: check2,
-                check3: check3
+                check3: check3,
+                priorityColor: priorityColor
             }})
         },
         updateSettings: function(currentID, dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2) {

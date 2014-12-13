@@ -81,7 +81,7 @@ MENU
 	-moz-box-shadow:    0px 0px 3px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.75);
 	padding: 0 0 1px 0;
-	z-index: 300;
+	z-index: 1000;
 	position: fixed;
 	background: white;
 	width: 100%; 
@@ -103,7 +103,6 @@ MENU
 				letter-spacing: .1em;
 				line-height: 3em;
 				margin-bottom: 20px;
-
 			}
 				.perspectiveMenu {
 
@@ -339,7 +338,7 @@ SHOW GOAL LINE
 		width: 11px;
 		height: 11px;
 		border-radius: 20px;
-		background: grey;
+		background: #ddd;
 		display: block;
 		content: " ";
 		z-index: 100;
@@ -407,7 +406,7 @@ SHOW GOAL LINE
 			.zoomControlsWrapper {
 				position: fixed;
 				top: 40%;
-				
+				display: none;
 			}
 
 				#zoomControls {
@@ -460,7 +459,7 @@ SHOW GOAL LINE
 			z-index: 200;
 			font-family: arial;
 			margin: -10px 0 0 0;
-			background-color: rgba(255, 255, 255, .9);
+			background-color: rgba(255, 255, 255, .9); 
 		}
 			.goal:hover {
 				
