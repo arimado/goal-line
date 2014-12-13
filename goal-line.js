@@ -19,12 +19,29 @@ if(Meteor.isClient) {
         console.log(goals.find().fetch());
     }); 
 
+    var dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3; 
+
     Meteor.subscribe('settings', function() {
-       
+       savedSettings(); 
     });
 
+    function savedSettings() {
+        dayRadioCheck1 = settings.find().fetch()[0].dayRadioCheck1; 
+        dayRadioCheck2 = settings.find().fetch()[0].dayRadioCheck2; 
+        dayRadioCheck3 = settings.find().fetch()[0].dayRadioCheck3; 
+        fontRadioCheck1 = settings.find().fetch()[0].fontRadioCheck1; 
+        fontRadioCheck2 = settings.find().fetch()[0].fontRadioCheck2;
+        fontRadioCheck3 = settings.find().fetch()[0].fontRadioCheck3;
+        cdRadioCheck1 = settings.find().fetch()[0].cdRadioCheck1;
+        cdRadioCheck2 = settings.find().fetch()[0].cdRadioCheck2;
+        descRadioCheck1 = settings.find().fetch()[0].descRadioCheck1;
+        descRadioCheck2 = settings.find().fetch()[0].descRadioCheck2;
+        dateRadioCheck1 = settings.find().fetch()[0].dateRadioCheck1;
+        dateRadioCheck2 = settings.find().fetch()[0].dateRadioCheck2;
+        dateRadioCheck3 = settings.find().fetch()[0].dateRadioCheck3; 
+    }
+
     function initSettings() {
-        console.log('settings length before  - ' + settings.find().fetch().length);
 
         var dayRadioCheck1 = null; 
         var dayRadioCheck2 = 'checked'; 
@@ -45,14 +62,10 @@ if(Meteor.isClient) {
         var dateRadioCheck3 = null; 
 
         if(settings.find().fetch().length < 1) {
+            console.log('initSettings fired'); 
             Meteor.call('initSettings', dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3); 
         }
-
-        console.log('settings length after  - ' + settings.find().fetch().length);
     }
-
-
-  
 
     Meteor.call('removeInitGoal', "initialDate"); 
 
@@ -175,32 +188,34 @@ if(Meteor.isClient) {
     console.log(initialDate);
     Meteor.call('addGoal', 'test', 'test', initialDate, intialTotalDay, 'initialDate');
 
-
     $(document).ready(function(){
-        // $('.showGoalLineWrapper').on('mousemove', function(e) {
-        //     $('#marker').css({top:e.pageY}); 
-        // });
+        
+        $('.showGoalLineWrapper').on('mousemove', function(e) {
+            $('#marker').css({top:e.pageY}); 
+        });
 
         $('#goalLineLeft').on('mousemove', function(e) {
-
+            
             var offset = $(this).offset();
-
             currentMousePosition = parseInt((e.pageY - offset.top));
-
+            
             var placeholderTotalDay = (currentMousePosition / globalZoom) + minTotalDays;
-
             var date = getDate(placeholderTotalDay); 
-           
-            // $("#minTotalDays").text(minTotalDays);
-            // $("#currentMousePosition").text(currentMousePosition);
-            // $("#placeHolderTotalDays").text(placeholderTotalDay);
-            // $("#year").text(date.year);
-            // $("#daysLeft").text(date.daysLeft);
-            // $("#month").text(date.month); 
-            // $("#day").text(date.day); 
-            // $("#object").text(date.object);
-            $("#markerInfo").text(date.day + ' / ' + date.month + ' / ' + date.year); 
 
+            var currentDay = new Date(); 
+            var currentTotalDay = getTotalDay(currentDay); 
+
+            var daysTill = parseInt(placeholderTotalDay - currentTotalDay); 
+
+            if(daysTill > -1) {
+                    $("#daysLeftMarker").css({opacity: 1});
+                 $("#daysLeftMarker").text(daysTill + ' days till'); 
+            } else {
+                 $("#daysLeftMarker").css({opacity: 0}); 
+            }
+
+            $("#markerInfo").text(date.day + ' / ' + date.month + ' / ' + date.year); 
+           
         });
 
         $('#zoomIn').click(function(){
@@ -226,6 +241,49 @@ if(Meteor.isClient) {
         $('#menuBarButton').click(function(){
             $('.settingsWrapper').slideToggle("slow");
         });
+
+        var showLogin = false; 
+
+    
+        $('#signButton').click(function(){
+            var winHeight = window.screen.height;
+
+
+            console.log('signForm clicked'); 
+            if(showLogin == false) {
+                $('.signFormWrapper').animate({height: winHeight + 'px', opacity: 1}, 1000); 
+                showLogin = true; 
+                return false;
+            }
+            if(showLogin) {
+                 $('.signFormWrapper').animate({height: '', opacity: 0}, 1000); 
+                showLogin = false; 
+                return false; 
+            }
+
+        });  
+
+        $('#signOptionRegister').click(function(){
+            $('#loginForm').animate({opacity: "0"}, 1000); 
+            $('#loginForm').css({display: "none"});
+            $('#registerForm').css({display: "block"}); 
+            $('#registerForm').animate({opacity: "1"}, 1000); 
+            $('#signOptionRegister').animate({opacity: "0"}, 1000); 
+            $('#signOptionRegister').css({display: "none"});
+            $('#signOptionSignIn').css({display: "block"});
+            $('#signOptionSignIn').animate({opacity: "1"}, 1000); 
+        }); 
+
+        $('#signOptionSignIn').click(function(){
+            $('#registerForm').animate({opacity: "0"}, 1000); 
+            $('#registerForm').css({display: "none"});
+            $('#loginForm').css({display: "block"}); 
+            $('#loginForm').animate({opacity: "1"}, 1000); 
+            $('#signOptionSignIn').animate({opacity: "0"}, 1000); 
+            $('#signOptionSignIn').css({display: "none"});
+            $('#signOptionRegister').css({display: "block"});
+            $('#signOptionRegister').animate({opacity: "1"}, 1000);        
+        }); 
 
     }); 
 
@@ -254,13 +312,11 @@ if(Meteor.isClient) {
         'click label':function(e, template) {
             // var dayRadio = e.target.day.value; 
 
-            console.log(e); 
-            console.log(e.target.previousElementSibling.value); 
+            var currentID = Meteor.userId();
 
             var currentRadio = e.target.previousElementSibling; 
             var currentRadioValue = e.target.previousElementSibling.value;
             var currentRadioId = e.target.previousElementSibling.id;
-
 
             // day
 
@@ -296,84 +352,51 @@ if(Meteor.isClient) {
                 fontRadioCheck1 = null;
                 fontRadioCheck2 = null; 
                 fontRadioCheck3 = 'checked';
+            }
+
+            //cd 
+
+            if(currentRadioId == "radio1_cd_1") {
+                cdRadioCheck1 = 'checked';
+                cdRadioCheck2 = null; 
+                cdRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio2_cd_2") {
+                cdRadioCheck1 = null;
+                cdRadioCheck2 = 'checked'; 
+                cdRadioCheck3 = null;
             } 
 
+            //desc
 
-            var fontRadio = $('input:radio[name="font"]:checked').val();
-            var fontRadioCheck1, fontRadioCheck2, fontRadioCheck3; 
-
-            switch(fontRadio) {
-                case "1":
-                    fontRadioCheck1 = 'checked';
-                    fontRadioCheck2 = null; 
-                    fontRadioCheck3 = null;
-                    break; 
-                case "2":
-                    fontRadioCheck1 = null;
-                    fontRadioCheck2 = 'checked'; 
-                    fontRadioCheck3 = null;
-                    break;  
-                case "3":
-                    fontRadioCheck1 = null;
-                    fontRadioCheck2 = null; 
-                    fontRadioCheck3 = 'checked';
-                    break;  
-            }
-
-            var cdRadio = $('input:radio[name="cd"]:checked').val();
-            var cdRadioCheck1, cdRadioCheck2; 
-
-            switch(cdRadio) {
-                case "1":
-                    cdRadioCheck1 = 'checked';
-                    cdRadioCheck2 = null; 
-                    cdRadioCheck3 = null;
-                    break; 
-                case "2":
-                    cdRadioCheck1 = null;
-                    cdRadioCheck2 = 'checked'; 
-                    cdRadioCheck3 = null;
-                    break; 
-            }
-
-            var descRadio = $('input:radio[name="desc"]:checked').val();
-            var descRadioCheck1, descRadioCheck2;
-
-            switch(descRadio) {
-                case "1":
-                    descRadioCheck1 = 'checked';
-                    descRadioCheck2 = null; 
-                    descRadioCheck3 = null;
-                    break; 
-                case "2":
-                    descRadioCheck1 = null;
-                    descRadioCheck2 = 'checked'; 
-                    descRadioCheck3 = null;
-                    break;
-            }
-
-            var dateRadio = $('input:radio[name="date"]:checked').val();
-            var dateRadioCheck1, dateRadioCheck2, dateRadioCheck3;
-
-            switch(dateRadio) {
-                case "1":
-                    dateRadioCheck1 = 'checked';
-                    dateRadioCheck2 = null; 
-                    dateRadioCheck3 = null;
-                    break; 
-                case "2":
-                    dateRadioCheck1 = null;
-                    dateRadioCheck2 = 'checked'; 
-                    dateRadioCheck3 = null;
-                    break;  
-                case "3":
-                    dateRadioCheck1 = null;
-                    dateRadioCheck2 = null; 
-                    dateRadioCheck3 = 'checked';
-                    break;  
+            if(currentRadioId == "radio1_desc_1") {
+                descRadioCheck1 = 'checked';
+                descRadioCheck2 = null; 
+                descRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio2_desc_2") {
+                descRadioCheck1 = null;
+                descRadioCheck2 = 'checked'; 
+                descRadioCheck3 = null;
             } 
 
-            var currentID = Meteor.userId();
+            //date 
+
+            if(currentRadioId == "radio1_date_1") {
+                dateRadioCheck1 = 'checked';
+                dateRadioCheck2 = null; 
+                dateRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio2_date_2") {
+                dateRadioCheck1 = null;
+                dateRadioCheck2 = 'checked'; 
+                dateRadioCheck3 = null;
+            } 
+            if(currentRadioId == "radio3_date_3") {
+                dateRadioCheck1 = null;
+                dateRadioCheck2 = null; 
+                dateRadioCheck3 = 'checked';
+            } 
 
 
             Meteor.call('updateSettings', currentID, dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck3,dateRadioCheck1,dateRadioCheck2 );
@@ -508,19 +531,33 @@ if(Meteor.isClient) {
                 $('.goal').hover(
 
                     function(){
-                        $(this).find('.flyFormInput').css({display: 'inline-block'});
-                        $(this).find('.flyGoalName').css({display: 'none'});
-                        $(this).find('.flyGoalDescription').css({display: 'none'});
-                        $(this).find('.buttons').css({display: 'block'});
+                        $('.markerSectionWrapper').css({display: 'none'}); 
                     }, 
 
                     function(){
-                        $(this).find('.flyFormInput').css({display: 'none'});
-                        $(this).find('.flyGoalName').css({display: 'inline-block'});
-                        $(this).find('.flyGoalDescription').css({display: 'inline-block'});
-                        $(this).find('.buttons').css({display: 'none'});
+                        $('.markerSectionWrapper').css({display: 'block'}); 
                     }
                 ); 
+
+                $('.goal').click(function(){
+                    $(this).find('.flyFormInput').css({display: 'inline-block'});
+                    $(this).find('.flyGoalName').css({display: 'none'});
+                    $(this).find('.flyGoalDescription').css({display: 'none'});
+                    $(this).find('.buttons').css({display: 'block'});
+                    $(this).find('.priority').css({display: 'block'});
+                    $(this).css({'z-index': '500'}); 
+                }); 
+
+                $(document).on('click', function(event) {
+                  if (!$(event.target).closest('.goal').length) { 
+                    $(this).find('.flyFormInput').css({display: 'none'});
+                    $(this).find('.flyGoalName').css({display: 'inline-block'});
+                    $(this).find('.flyGoalDescription').css({display: 'inline-block'});
+                    $(this).find('.buttons').css({display: 'none'});
+                    $(this).find('.priority').css({display: 'none'});
+                    $(this).css({'z-index': '200'}); 
+                  }
+                });
             }
 
             var intialPostElement = goals.findOne({initialName: 'initialDate'});
@@ -549,6 +586,7 @@ if(Meteor.isClient) {
             e.preventDefault(); 
             var selectedEventID = this._id; 
             Meteor.call('removeGoal', selectedEventID);
+            $('.markerSectionWrapper').css({display: 'block'}); 
 
         }, 
         'submit .flyForm':function(e, template)

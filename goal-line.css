@@ -84,8 +84,7 @@ MENU
 	z-index: 300;
 	position: fixed;
 	background: white;
-	width: 100%;
-
+	width: 100%; 
 }
 
 	.settingsWrapper {
@@ -188,6 +187,125 @@ MENU
 						font-size: 12px;
 					}
 
+	.signFormWrapper {
+		border: 1px solid white;
+		overflow: auto;
+		opacity: 0; 
+		height: 0px; 
+	}
+
+		.outer {
+
+		    margin: 0 auto;
+		    width: 200px;
+		}
+		.parent{   
+		    background-color: red;
+		    display: table-cell;
+		    vertical-align: middle;
+		    text-align: center;
+		    width: 200px;
+		    height: 500px;
+		}
+		.child{
+		    width: 100%;
+		    height: 52px;
+		    display: inline-block;
+		    background-color: blue;
+		}
+
+		.signForm {
+			display: block;
+			margin: auto;
+			text-align: center;
+			margin-top: 14%;
+		}
+
+			.signForm input {
+				font-size: 2em;
+				margin: 0 0 20px 0;
+				border-color: transparent;
+				background-color: transparent;
+				font-family: helvetica; 
+				font-weight: 100;
+				text-align: center;
+			}
+
+					.signForm input::-webkit-input-placeholder {
+					   color: black;
+					}
+
+					.signForm input:-moz-placeholder { /* Firefox 18- */
+					   color: black;  
+					}
+
+					.signForm input::-moz-placeholder {  /* Firefox 19+ */
+					   color: black;  
+					}
+
+					.signForm input:-ms-input-placeholder {  
+					   color: black;  
+					} 
+
+					.signForm input:focus {
+						 outline: 0;
+					}
+
+				.signForm input[type="email"] {
+					
+				}
+
+				.signForm input[type="password"] {
+
+				}
+
+				.signForm input[type="submit"] {
+					font-size: 1em;
+					margin: 50px 0 0 0;
+					text-transform: uppercase;
+					letter-spacing: .2em;
+				}
+
+				.signForm input[type="submit"]:hover {
+					cursor: pointer;
+					color: #ddd;
+				}
+
+
+
+		#loginForm {
+			
+		}
+
+
+
+		#registerForm {
+			opacity: 0; 
+			display: none;
+		}
+
+		.signOptions {
+			text-align: center;
+			font-weight: 100;
+			text-transform: uppercase;
+			font-size: .6em;
+			letter-spacing: .2em;
+			margin: 30px 0 0 0;
+		}
+
+			.signOptions:hover {
+				color: #ddd;
+				cursor: pointer;
+			}
+
+			#signOptionSignIn {
+				display: none;
+			}
+
+			#signOptionRegister {
+				display: inline; 
+			}
+
 
 
 /* 
@@ -199,24 +317,49 @@ SHOW GOAL LINE
 
 .showGoalLineWrapper {
 
-}
+}	
+	.markerSectionWrapper {
+		overflow: hidden;
+	}
+
+		.markerSection {
+			position: relative;
+			width: 50%;
+			float: left; 
+		}
+
+
+	#circleMarker {
+		padding: 0 0 0 12px;
+	}
+
+
+	#circleMarker:before {
+		position: absolute;
+		width: 11px;
+		height: 11px;
+		border-radius: 20px;
+		background: grey;
+		display: block;
+		content: " ";
+		z-index: 100;
+		margin: 0 0 0 -3px;
+	}
 
 	#marker {
 		position: absolute;
 		width: 100%;
-		font-size: 1em;
+		font-size: 12px;
 		font-weight: bold;
-		color: #ccc;
-
+		color: #ddd;
 	}
 
 	.markerInfoWrapper {
-		width: 50%;
 	}
 
 	#markerInfo {
-		padding: 20px 30% 0 0;
 		text-align: right;
+		margin: 0 10px 0 0 ;
 	}
 
 	.endLineContainer {
@@ -316,9 +459,15 @@ SHOW GOAL LINE
 			/*border: 1px solid red;*/
 			z-index: 200;
 			font-family: arial;
+			margin: -10px 0 0 0;
+			background-color: rgba(255, 255, 255, .9);
 		}
 			.goal:hover {
 				
+			}
+
+			.goalInfo {
+				margin: 0 0 0 5px;
 			}
 
 			.flyForm {
@@ -328,7 +477,7 @@ SHOW GOAL LINE
 				.flyGoalDate {
 					color: grey;
 					position: absolute;
-					margin-left: -120px;
+					margin: 10px 0 0 -120px;
 					text-align: right;
 					width: 100px;
 					color: #ccc;
@@ -337,27 +486,50 @@ SHOW GOAL LINE
 				}
 
 					.flyGoalDaysLeft {
-						margin: 0 0 0 2px;
-						color: #ccc;
+						margin: -12px 0 0 3px;
+						color: #ddd;
 						font-weight: bold;
 						font-size: 12px;
+						position: absolute;
+						display: inline-block;
+						width: 100px;
+						overflow: visible;
 					}
 
+				.goalMarker {
+					position: absolute;
+					width: 11px;
+					height: 11px;
+					border-radius: 20px;
+					background: grey;
+					display: block;
+					content: " ";
+					z-index: 100;
+					margin: 10px 0 0 -13px;
+				}
+
 				.goalName {
-					
 					font-weight: bold;
-					margin: 5px 0 5px 0;
+					margin: 0px 0 0px 0;
+					overflow: auto;
 				}
 					.flyGoalName {
+						margin: 5px 0 0 0;
+						display: block;
 						border: 1px solid white;
 						font-size: 1em;
 						padding: 2px 0px 3px 1px;
 					}
 
+						.flyGoalName:before {
+							
+						}
+
 					.goalName .flyFormInput {
 						font-size: 1em;
 						font-weight: bold;
 						font-family: arial;
+						padding: 5px 0 0 0;
 					}
 
 				.goalDescription {
@@ -400,6 +572,7 @@ SHOW GOAL LINE
 
 				.priority {
 					margin: 10px 0 0 2px;
+					display: none;  
 				}
 
 					.priority input[type="radio"] {
@@ -519,8 +692,6 @@ SHOW GOAL LINE
 				.buttons input {
 				   
 				}
-
-
 
 					.button {
 						display: inline-block;

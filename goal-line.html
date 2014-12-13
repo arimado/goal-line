@@ -17,11 +17,24 @@
 </div>  --> 
 {{> menu}}
 <div class="showGoalLineWrapper"> 
-	<!-- <div id="marker">
-		<div class="markerInfoWrapper">
-			<div id="markerInfo"> </div>
+	<div id="marker">
+		<div class="markerSectionWrapper">
+			<div class="markerSection">
+				<div class="markerInfoWrapper">
+					<div id="markerInfo"></div>
+				</div> 
+			</div>
+			<div class="markerSection">
+				<span id="circleMarker"> 
+					<span id="daysLeftMarker"> </span> 
+				</span> 
+
+			</div> 
+
 		</div> 
-	</div>  -->
+		
+		
+	</div> 
 	{{> showGoalLine}}
 </div> 
 </body>
@@ -99,8 +112,22 @@
 			</div> 
 			<div class="menuBarSection menuBarRight">
 				<a id="signButton" href="#">Sign OUT</a>
-				{{> login}}
-				{{> register}}
+				
+				
+			</div> 
+			<div class="signFormWrapper"> 
+				<div class="outerSign">
+				    <div class="parentSign">
+				         <div class="childSign">
+				         	{{> login}}
+							{{> register}}
+							<div class="signOptions">
+								<span class="signOption" id="signOptionSignIn">Sign In</span> 
+								<span class="signOption" id="signOptionRegister">Register</span> 
+							</div> 
+						</div>
+				    </div>
+				</div>
 			</div> 
 		</div> 
 	</div> 
@@ -139,43 +166,47 @@
 				<div class="goal {{ _id }}" style="top:{{relativePosition}}px;">
 					<form class="flyForm"> 
 						<div class="goalDate">
+
 							<span class="flyGoalDate"> {{goalDay}}/{{goalMonth}}/{{goalYear}} </span>
 							
-							 <div>
-								<span class="flyGoalDaysLeft"> {{goalDaysLeft}} days till </span> 
-							</div>
+							
 							<!-- <div>
 								<span class="flyGoalDateObject"> {{goalTotalDay}} </span> 
 							</div> -->
 						</div> 
-						<div class="goalName">
+						<div class="goalMarker"> </div> 
+						<div class="goalInfo"> 
+							 <div>
+								<span class="flyGoalDaysLeft"> {{goalDaysLeft}} days till </span> 
+							</div>
+							<div class="goalName">
+								<span class="flyGoalName"> {{ goalName }} </span>  
+								<input type="text" class="flyFormInput flyFormGoalName {{ _id }}" value="{{ goalName }}"> 
+							</div> 
+							<div class="goalDescription"> 
+								<span class="flyGoalDescription">{{ goalDescription }} </span>
+								<input type="text" class="flyFormInput flyFormGoalDescription {{ _id }}" value="{{goalDescription}}">
+							</div> 
+							<div>
+								<input type="text" class="flyFormInput flyFormGoalDay {{ _id }}" value="{{goalDay}}"><input type="text" class="flyFormInput flyFormGoalMonth {{ _id }}" value="{{goalMonth}}"><input type="text" class="flyFormInput flyFormGoalYear {{ _id }}" value="{{goalYear}}">
+							</div> 
+							<!-- <div class="goalRelativePosition"> 
+								<span class="flyGoalPosition">Position: {{ relativePosition }} </span>
+							</div>  -->
+							<div class="priority">
+								<input type="radio" id="radio1_{{_id}}" name="radios" value="1" {{check1}}>
+								<label class="radio1" for="radio1_{{_id}}"><div class="radioInner radioInner1"></div></label>
 
-							<span class="flyGoalName"> {{ goalName }} </span>  
-							<input type="text" class="flyFormInput flyFormGoalName {{ _id }}" value="{{ goalName }}"> 
-						</div> 
-						<div class="goalDescription"> 
-							<span class="flyGoalDescription">{{ goalDescription }} </span>
-							<input type="text" class="flyFormInput flyFormGoalDescription {{ _id }}" value="{{goalDescription}}">
-						</div> 
-						<div>
-							<input type="text" class="flyFormInput flyFormGoalDay {{ _id }}" value="{{goalDay}}"><input type="text" class="flyFormInput flyFormGoalMonth {{ _id }}" value="{{goalMonth}}"><input type="text" class="flyFormInput flyFormGoalYear {{ _id }}" value="{{goalYear}}">
-						</div> 
-						<!-- <div class="goalRelativePosition"> 
-							<span class="flyGoalPosition">Position: {{ relativePosition }} </span>
-						</div>  -->
-						<div class="priority">
-							<input type="radio" id="radio1_{{_id}}" name="radios" value="1" {{check1}}>
-							<label class="radio1" for="radio1_{{_id}}"><div class="radioInner radioInner1"></div></label>
+								<input type="radio" id="radio2_{{_id}}" name="radios" value="2" {{check2}}>
+								<label class="radio2" for="radio2_{{_id}}"><div class="radioInner radioInner2"></div></label>
 
-							<input type="radio" id="radio2_{{_id}}" name="radios" value="2" {{check2}}>
-							<label class="radio2" for="radio2_{{_id}}"><div class="radioInner radioInner2"></div></label>
-
-							<input type="radio"  id="radio3_{{_id}}" name="radios" value="3" {{check3}}>
-							<label class="radio3" for="radio3_{{_id}}"><div class="radioInner radioInner3"></div></label>
-						</div>
-						<div class="buttons {{ _id }}"> 
-							<input type="button" class="button" id="removeButton" value="-">
-							<input type="submit" class="button" id="updateButton" value="+"> 
+								<input type="radio"  id="radio3_{{_id}}" name="radios" value="3" {{check3}}>
+								<label class="radio3" for="radio3_{{_id}}"><div class="radioInner radioInner3"></div></label>
+							</div>
+							<div class="buttons {{ _id }}"> 
+								<input type="button" class="button" id="removeButton" value="-">
+								<input type="submit" class="button" id="updateButton" value="+"> 
+							</div> 
 						</div> 
 					</form> 
 				</div> 
@@ -205,18 +236,18 @@
 	</div> 
 </template> 
 
-
 <template name="login"> 
-	<form id="loginForm" action="action">
-		<input type="email" id="loginEmail" name="loginEmail"/> 
-		<input type="password" id="loginPassword" name="loginPassword"/> 
-		<input type="submit" id="loginButton" value="Sign In" name="loginButton"/> 
+	<form class="signForm" id="loginForm" action="action">
+		<input type="email" id="loginEmail" name="loginEmail" placeholder="email"/> <br>
+		<input type="password" id="loginPassword" name="loginPassword" placeholder="password"/> <br>
+		<input type="submit" id="loginButton" value="Sign In" name="loginButton"/> <br>
 	</form>
 </template> 
+
 <template name="register">
-	<form id="registerForm" action="action"> 
-		<input type="email" id="registerEmail" name="registerEmail"/> 
-		<input type="password" id="registerPassword" name="registerPassword"/> 
+	<form class="signForm" id="registerForm" action="action"> 
+		<input type="email" id="registerEmail" name="registerEmail" placeholder="email"/> <br>
+		<input type="password" id="registerPassword" name="registerPassword" placeholder="password"/> <br>
 		<input type="submit" id="registerButton" value="register" name="registerButton"/> 
 	</form> 
 </template> 
