@@ -39,7 +39,11 @@ if(Meteor.isClient) {
         dateRadioCheck1 = settings.find().fetch()[0].dateRadioCheck1;
         dateRadioCheck2 = settings.find().fetch()[0].dateRadioCheck2;
         dateRadioCheck3 = settings.find().fetch()[0].dateRadioCheck3; 
-    }
+
+        setSettings(); 
+
+        console.log('saved settings fired'); 
+    } 
 
     function initSettings() {
 
@@ -65,6 +69,22 @@ if(Meteor.isClient) {
             console.log('initSettings fired'); 
             Meteor.call('initSettings', dayRadioCheck1, dayRadioCheck2, dayRadioCheck3, fontRadioCheck1, fontRadioCheck2,fontRadioCheck3, cdRadioCheck1,cdRadioCheck2,descRadioCheck1,descRadioCheck2,dateRadioCheck1,dateRadioCheck2,dateRadioCheck3); 
         }
+
+        console.log('init settings fired'); 
+    }
+
+    function setSettings() {
+        if(dayRadioCheck1 == "checked") {
+            globalZoom = 1; 
+        } 
+        if(dayRadioCheck2 == "checked") {
+            globalZoom = 2; 
+        } 
+        if(dayRadioCheck3 == "checked") {
+            globalZoom = 3; 
+        } 
+
+        console.log(globalZoom); 
     }
 
     Meteor.call('removeInitGoal', "initialDate"); 
@@ -167,8 +187,15 @@ if(Meteor.isClient) {
     } 
 
     function initLine() {
+        
         $('.goalLine').css({height: lineHeight}, 3000);
         $('#line').css({height: lineHeight}, 3000); 
+
+        //printing legend 
+        for(var i = 0; i < lineHeight; i++) {
+            
+        }
+
     }
 
     // function initSettings() {
@@ -215,7 +242,8 @@ if(Meteor.isClient) {
             }
 
             $("#markerInfo").text(date.day + ' / ' + date.month + ' / ' + date.year); 
-           
+
+
         });
 
         $('#zoomIn').click(function(){
@@ -223,6 +251,7 @@ if(Meteor.isClient) {
                 globalZoom++; 
             }  
         })
+
         $('#zoomOut').click(function(){
             if(globalZoom > 0) {
                 globalZoom--; 
@@ -510,17 +539,15 @@ if(Meteor.isClient) {
             //set height 
             lineHeight = globalZoom * (maxTotalDays - minTotalDays + 500);
 
-            initLine(); 
+            // initLine(); 
 
             //update days left
 
             for(i = 0; i < goals.find().fetch().length; i++) {
-
                 var currentGoalId = goals.find().fetch()[i]._id; 
                 var currentGoalTotalDays = goals.find().fetch()[i].goalTotalDay;
                 var currentGoalDaysLeft = parseInt(goals.find().fetch()[i].goalTotalDay - currentTotalDay);
                 goals.update({_id: currentGoalId}, {$set: {goalDaysLeft: currentGoalDaysLeft}}); 
-
             }
 
             showGoalFired++; 
